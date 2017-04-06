@@ -1,7 +1,7 @@
 # tap-notify-termux
 [![npm version](https://badge.fury.io/js/tap-notify.svg)](http://badge.fury.io/js/tap-notify)
 
-the Notifier for OS X, Linux and Windows as [TAP reporter](https://github.com/substack/tape#pretty-reporters)
+the Notifier för Termux on Android, OS X, Linux and Windows as [TAP reporter](https://github.com/substack/tape#pretty-reporters)
 
 ![Screenshot](screenshot1.png)
 
