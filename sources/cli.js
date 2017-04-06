@@ -1,4 +1,4 @@
-#!env node
+#!/usr/bin/env node
 
 import createReporter from './index';
 
