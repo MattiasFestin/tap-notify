@@ -1,7 +1,7 @@
 {
-  "name": "tap-notify",
+  "name": "tap-notify-termux",
   "version": "1.0.0",
-  "description": "the Notifier for OS X, Linux and Windows as TAP reporter",
+  "description": "Fork of tap-notify, to suport termux. the Notifier for OS X, Linux and Windows as TAP reporter",
   "main": "./distributions/index.js",
   "bin": {
     "tap-notify": "./distributions/cli.js"
@@ -10,7 +10,7 @@
     "babel": "babel ./sources --out-dir ./distributions",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "axross <kou@axross.org> (http://axross.me/)",
+  "author": "Mattias Festin <mail@mattiasfest.in>(Original author axross <kou@axross.org> (http://axross.me/))",
   "license": "MIT",
   "dependencies": {
     "node-notifier": "^4.3.1",
@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/axross/tap-notify.git"
+    "url": "git+https://github.com/mattiasfestin/tap-notify-termux.git"
   },
   "keywords": [
     "tap",
@@ -38,7 +38,7 @@
     "notifier"
   ],
   "bugs": {
-    "url": "https://github.com/axross/tap-notify/issues"
+    "url": "https://github.com/mattiasfestin/tap-notify-termux/issues"
   },
-  "homepage": "https://github.com/axross/tap-notify#readme"
+  "homepage": "https://github.com/mattiasfestin/tap-notify-termux#readme"
 }
