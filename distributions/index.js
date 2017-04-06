@@ -26,11 +26,9 @@ var _fs = require('fs');
 
 var _fs2 = _interopRequireDefault(_fs);
 
-var _nodeTermuxApi = require('node-termux-api');
+var _child_process = require('child_process');
 
-var termux = _interopRequireWildcard(_nodeTermuxApi);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+var _child_process2 = _interopRequireDefault(_child_process);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -38,11 +36,7 @@ var notifier = null;
 if (_fs2.default.existsSync('/data/data/com.termux/files/usr/bin/termux-notification')) {
   notifier = {
     notify: function notify(o) {
-      var cmd = termux.createCommand().notification().setTitle(o.title).setContent(o.message);
-
-      cmd.command.setESParam('led-color', o.ledColor);
-
-      cmd.build().run();
+      _child_process2.default.execSync('termux-notification --title "' + o.title + '" --content "' + o.message + '" --led-color "' + o.ledColor + '"--priority max ' + (o.sound ? '--sound' : ''));
     }
   };
 } else {

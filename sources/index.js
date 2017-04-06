@@ -5,21 +5,13 @@ import through2 from 'through2';
 import parser from 'tap-parser';
 import path from 'path';
 import fs from 'fs';
-import * as termux from 'node-termux-api';
+import child_process from 'child_process';
 
 var notifier = null;
 if (fs.existsSync('/data/data/com.termux/files/usr/bin/termux-notification')) {
     notifier = {
         notify: (o) => {
-            const cmd = termux.createCommand()
-                .notification()
-                .setTitle(o.title)
-                .setContent(o.message);
-
-            cmd.command.setESParam('led-color', o.ledColor);
-
-            cmd.build()
-                .run();
+            child_process.execSync(`termux-notification --title "${o.title}" --content "${o.message}" --led-color "${o.ledColor}"--priority max ${o.sound ? '--sound' : ''}`);
         }
     };
 } else {
