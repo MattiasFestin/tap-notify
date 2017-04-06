@@ -1,18 +1,43 @@
-import notifier from 'node-notifier';
+'use strict';
+
+import nodeNotifier from 'node-notifier';
 import through2 from 'through2';
 import parser from 'tap-parser';
 import path from 'path';
+import fs from 'fs';
+import * as termux from 'node-termux-api';
+
+var notifier = null;
+if (fs.existsSync('/data/data/com.termux/files/usr/bin/termux-notification')) {
+    notifier = {
+        notify: (o) => {
+            const cmd = termux.createCommand()
+                .notification()
+                .setTitle(o.title)
+                .setContent(o.message);
+
+            cmd.command.setESParam('led-color', o.ledColor);
+
+            cmd.build()
+                .run();
+        }
+    };
+} else {
+    notifier = nodeNotifier;
+}
 
 const DEFAULT_PASSED_OPTIONS = {
   title: 'Test passed.',
   icon: path.resolve(__dirname, '../passed.png'),
-  sound: false,
+  ledColor: '00FF00',
+  sound: false
 };
 
 const DEFAULT_FAILED_OPTIONS = {
   title: 'Test failed!',
   icon: path.resolve(__dirname, '../failed.png'),
-  sound: 'Basso',
+  ledColor: 'FF0000',
+  sound: false
 };
 
 const createReporter = ({ passed, failed } = {}) => {
@@ -28,9 +53,11 @@ const createReporter = ({ passed, failed } = {}) => {
   stream.pipe(p);
 
   p.on('assert', assert => {
-    if (assert.ok) return;
+    if (assert.ok) {
+        return;
+    }
 
-    errorOccuredAt = assert.diag.at
+    errorOccuredAt = assert.diag.at;
   });
 
   p.on('complete', result => {

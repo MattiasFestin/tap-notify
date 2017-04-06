@@ -22,25 +22,51 @@ var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
 
+var _fs = require('fs');
+
+var _fs2 = _interopRequireDefault(_fs);
+
+var _nodeTermuxApi = require('node-termux-api');
+
+var termux = _interopRequireWildcard(_nodeTermuxApi);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var notifier = null;
+if (_fs2.default.existsSync('/data/data/com.termux/files/usr/bin/termux-notification')) {
+  notifier = {
+    notify: function notify(o) {
+      var cmd = termux.createCommand().notification().setTitle(o.title).setContent(o.message);
+
+      cmd.command.setESParam('led-color', o.ledColor);
+
+      cmd.build().run();
+    }
+  };
+} else {
+  notifier = _nodeNotifier2.default;
+}
 
 var DEFAULT_PASSED_OPTIONS = {
   title: 'Test passed.',
   icon: _path2.default.resolve(__dirname, '../passed.png'),
+  ledColor: '00FF00',
   sound: false
 };
 
 var DEFAULT_FAILED_OPTIONS = {
   title: 'Test failed!',
   icon: _path2.default.resolve(__dirname, '../failed.png'),
-  sound: 'Basso'
+  ledColor: 'FF0000',
+  sound: false
 };
 
 var createReporter = function createReporter() {
-  var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-  var passed = _ref.passed;
-  var failed = _ref.failed;
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      passed = _ref.passed,
+      failed = _ref.failed;
 
   var passedOptions = _extends({}, DEFAULT_PASSED_OPTIONS, passed);
   var failedOptions = _extends({}, DEFAULT_FAILED_OPTIONS, failed);
@@ -54,18 +80,20 @@ var createReporter = function createReporter() {
   stream.pipe(p);
 
   p.on('assert', function (assert) {
-    if (assert.ok) return;
+    if (assert.ok) {
+      return;
+    }
 
     errorOccuredAt = assert.diag.at;
   });
 
   p.on('complete', function (result) {
     if (result.ok) {
-      _nodeNotifier2.default.notify(_extends({
+      notifier.notify(_extends({
         message: result.pass + ' of ' + result.count + ' tests passed.'
       }, passedOptions));
     } else {
-      _nodeNotifier2.default.notify(_extends({
+      notifier.notify(_extends({
         message: (result.fail || 0) + ' of ' + result.count + ' tests failed' + (errorOccuredAt ? ' at ' + errorOccuredAt : '')
       }, failedOptions));
     }
