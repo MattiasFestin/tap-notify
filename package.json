@@ -1,6 +1,6 @@
 {
   "name": "tap-notify-termux",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fork of tap-notify, to suport termux. the Notifier for OS X, Linux and Windows as TAP reporter",
   "main": "./distributions/index.js",
   "bin": {

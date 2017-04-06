@@ -36,7 +36,7 @@ var notifier = null;
 if (_fs2.default.existsSync('/data/data/com.termux/files/usr/bin/termux-notification')) {
   notifier = {
     notify: function notify(o) {
-      _child_process2.default.execSync('termux-notification --title "' + o.title + '" --content "' + o.message + '" --led-color "' + o.ledColor + '"--priority max ' + (o.sound ? '--sound' : ''));
+      _child_process2.default.execSync('termux-notification --title "' + o.title + '" --content "' + o.message + '" --led-color "' + o.ledColor + '" --priority max ' + (o.sound ? '--sound' : ''));
     }
   };
 } else {

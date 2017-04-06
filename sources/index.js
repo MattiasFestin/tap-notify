@@ -11,7 +11,7 @@ var notifier = null;
 if (fs.existsSync('/data/data/com.termux/files/usr/bin/termux-notification')) {
     notifier = {
         notify: (o) => {
-            child_process.execSync(`termux-notification --title "${o.title}" --content "${o.message}" --led-color "${o.ledColor}"--priority max ${o.sound ? '--sound' : ''}`);
+            child_process.execSync(`termux-notification --title "${o.title}" --content "${o.message}" --led-color "${o.ledColor}" --priority max ${o.sound ? '--sound' : ''}`);
         }
     };
 } else {
